@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This scenario file was created by SGDiCoP on 2014-04-16T15:14:48-->
+<scenario>
+    <!--Obstacles-->
+  <obstacle x1="0.0" y1="1.0" x2="-8.0" y2="1.0"/>
+  <obstacle x1="-8" y1="1.0" x2="-8" y2="-3.0"/>
+  <obstacle x1="0.5" y1="-1.4" x2="0.5" y2="-9.28"/>
+
+  <obstacle x1="0.5" y1="-1.4" x2="-1.5" y2="-1.4"/>
+
+
+  <obstacle x1="1.0" y1="-9.28" x2="-3.5" y2="-9.28"/>
+  <obstacle x1="-3.5" y1="-9.28" x2="-3.5" y2="-3.6"/>
+  <obstacle x1="-3.5" y1="-6.8" x2="-9.3" y2="-6.8"/>
+  <obstacle x1="-9.3" y1="-6.8" x2="-9.3" y2="-4.0"/>
+
+
+  <!--<obstacle x1="-0.5" y1="-0.5" x2="-0.5" y2="29.5"/>
+  
+	<obstacle x1="29.5" y1="29.5" x2="29.5" y2="-0.5"/>-->
+
+  <!--Waypoints (incl. WaitingQueues)-->
+  <waypoint id="kitchen" x="-6" y="-4" r="0.5"/>
+  <waypoint id="corridor1" x="-4.5" y="-3" r="0.5"/>
+  <waypoint id="living_room" x="-4.5" y="-1.5" r="0.5"/>
+  <waypoint id="corridor2" x="-2.0" y="0" r="0.5"/>
+  <waypoint id="outdoor" x="5.0" y="2.0" r="0.5"/>
+  <waypoint id="bathroom" x="-1" y="-3" r="0.5"/>
+
+
+  <waypoint id="coffee_entry" x="5" y="25" r="5"/>
+  <waypoint id="coffee_exit" x="5" y="5" r="5"/>
+
+  <waypoint id="robot_goal" x="22" y="27" r="2"/>
+  <waypoint id="robot_start" x="4" y="4" r="2"/>
+
+  <queue id="info_desk" x="20" y="15" direction="0"/>
+
+
+    <!--Agents-->
+    <agent x="0.0" y="0.0" n="1" dx="0" dy="0" type="2">
+        <addwaypoint id="robot_start"/>
+        <addwaypoint id="robot_goal"/>
+    </agent>
+    <!--AgentClusters-->
+    <agent x="-8" y="-5" n="1" dx="0" dy="0" type="0">
+        <addwaypoint id="kitchen"/>
+        <addwaypoint id="corridor1"/>
+        <addwaypoint id="living_room"/>
+        <addwaypoint id="corridor2"/>
+        <addwaypoint id="outdoor"/>
+    </agent>
+</scenario>
