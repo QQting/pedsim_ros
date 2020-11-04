@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This scenario file was created by SGDiCoP on 2014-04-16T15:14:48-->
+<scenario>
+    <!--Obstacles-->
+  <obstacle x1="3.0" y1="0.5" x2="3.5" y2="-2.0" id="eyebrow_l"/>
+  <obstacle x1="3.5" y1="-3.0" x2="3.5" y2="-5.0" id="eyebrow_r"/>
+  <obstacle x1="0.0" y1="-1.0" x2="0.0" y2="-3.0" id="mouse"/>
+  <obstacle x1="0.8" y1="1.1" x2="-1.8" y2="-0.5" id="chin_l"/>
+  <obstacle x1="-1.8" y1="-0.5" x2="-1.0" y2="-3.0" id="chin_r"/>
+    <!--       
+  <obstacle x1="0.0" y1="-0.2" x2="-4.8" y2="-0.2"/>
+  <obstacle x1="-5.0" y1="2.0" x2="-5.0" y2="-3.6"/>
+  <obstacle x1="-5.0" y1="-4.0" x2="-7.4" y2="-4.0"/>
+  <obstacle x1="-7.5" y1="-4.0" x2="-7.5" y2="4.8"/>
+  <obstacle x1="-7.5" y1="5.2" x2="7.2" y2="5.2"/>
+  <obstacle x1="-7.5" y1="5.2" x2="7.2" y2="5.2"/>
+  <obstacle x1="7.5" y1="5.0" x2="7.5" y2="-5.0"/>
+  <obstacle x1="7.5" y1="-5.0" x2="5.0" y2="-5.0"/>
+  <obstacle x1="5.0" y1="-5.0" x2="5.0" y2="-0.2"/>
+  <obstacle x1="5.6" y1="-0.2" x2="1.6" y2="-0.2"/>
+  <obstacle x1="2.4" y1="4.0" x2="2.4" y2="1.0"/>
+  <obstacle x1="0.0" y1="5.0" x2="0.0" y2="1.4"/>
+  <obstacle x1="2.0" y1="1.4" x2="0.0" y2="1.4"/>
+     -->
+
+  <waypoint id="wp0" x="2.0" y="2.0" r="0.25"/> 
+  <waypoint id="wp1" x="-2.0" y="2.0" r="0.25"/>
+  <waypoint id="wp2" x="-2.5" y="-0.5" r="0.25"/>    
+  <waypoint id="wp3" x="5" y="2" r="0.25"/>
+  <waypoint id="wp4" x="6" y="-2" r="0.25"/>
+  <waypoint id="stand_point" x="3"  y="3" r="0.25"/> 
+  <waypoint id="robot_start" x="0" y="0" r="2"/>
+
+    <!--Agents-->
+    <agent x="2" y="-2" n="1" dx="0" dy="0" type="0">
+        <addwaypoint id="wp0"/>
+        <addwaypoint id="wp1"/>
+        <addwaypoint id="wp2"/>
+        <addwaypoint id="wp1"/>        
+        <addwaypoint id="wp3"/>
+        <addwaypoint id="wp4"/>
+        <addwaypoint id="wp3"/>        
+    </agent>
+    
+    <agent x="3" y="3" n="1" dx="0" dy="0" type="0">
+      <addwaypoint id="stand_point"/>
+    </agent>
+    <agent x="0" y="0" n="1" dx="0" dy="0" type="2">
+      <!-- NeuronBot initial position  -->
+      <addwaypoint id="robot_start"/>
+    </agent>
+  
+</scenario>

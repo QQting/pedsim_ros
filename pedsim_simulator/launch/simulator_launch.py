@@ -38,11 +38,12 @@ def generate_launch_description():
 
     return LaunchDescription([
         # Set env var to print messages to stdout immediately
-        SetEnvironmentVariable('RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1'),
+        SetEnvironmentVariable('RCUTILS_LOGGING_USE_STDOUT', '1'),
+        SetEnvironmentVariable('RCUTILS_LOGGING_BUFFERED_STREAM', '1'),
 
         DeclareLaunchArgument(
             'scene_file', 
-            default_value=os.path.join(simulator_dir, 'scenarios', 'social_context.xml'),
+            default_value=os.path.join(simulator_dir, 'scenarios', 'neuronbot2_world.xml'),
             description=''),
         
         DeclareLaunchArgument(

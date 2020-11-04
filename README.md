@@ -18,8 +18,10 @@ colcon build --symlink-install --cmake-args '-DCMAKE_BUILD_TYPE=Release'
 
 ### Sample usage
 ```sh
-ros2 launch pedsim_gazebo_plugin house_demo_launch.py
-ros2 launch pedsim_simulator house_demo_launch.py
+ros2 launch pedsim_gazebo_plugin neuronbot2_world_launch.py
+ros2 launch pedsim_simulator neuronbot2_demo_launch.py simulation_factor:=1.0
+ros2 launch neuronbot2_nav bringup_launch.py use_sim_time:=true
+rviz2 -d ~/pedsim_ros2_ws/src/pedsim_ros/pedsim_visualizer/rviz/pedsim.rviz 
 ```
 
 ### Licence
