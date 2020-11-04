@@ -31,7 +31,7 @@ def generate_launch_description():
     # Get the launch directory
     pedsim_dir = get_package_share_directory('pedsim_gazebo_plugin')
 
-    #bringup_dir = get_package_share_directory('nav2_bringup')
+    bringup_dir = get_package_share_directory('neuronbot2_description')
 
     launch_dir = os.path.join(pedsim_dir, 'launch')
     gazebo_dir = get_package_share_directory('gazebo_ros')
@@ -50,6 +50,18 @@ def generate_launch_description():
     world = LaunchConfiguration('world')
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static')]
+
+    gazebo_model_path = os.path.join(get_package_share_directory('pedsim_gazebo_plugin'), 'models')
+    gazebo_model_path += ':' + os.path.join(get_package_share_directory('neuronbot2_gazebo'), 'models')
+
+    print(gazebo_model_path)
+
+    if 'GAZEBO_MODEL_PATH' in os.environ:
+        os.environ['GAZEBO_MODEL_PATH'] += ":" + gazebo_model_path
+    else :
+        os.environ['GAZEBO_MODEL_PATH'] = gazebo_model_path
+
+    print(os.environ['GAZEBO_MODEL_PATH'])
 
     # Declare the launch arguments
     declare_namespace_cmd = DeclareLaunchArgument(
@@ -108,18 +120,18 @@ def generate_launch_description():
         node_name='spawn_pedsim_agents',
         output='screen')
 
-    # urdf = os.path.join(bringup_dir, 'urdf', 'turtlebot3_waffle.urdf')
+    urdf = os.path.join(bringup_dir, 'urdf', 'neuronbot2.urdf')
 
-    #start_robot_state_publisher_cmd = Node(
-    #    condition=IfCondition(use_robot_state_pub),
-    #    package='robot_state_publisher',
-    #    node_executable='robot_state_publisher',
-    #    node_name='robot_state_publisher',
-    #    node_namespace=namespace,
-    #    output='screen',
-    #    parameters=[{'use_sim_time': use_sim_time}],
-    #    remappings=remappings,
-    #    arguments=[urdf])
+    start_robot_state_publisher_cmd = Node(
+        condition=IfCondition(use_robot_state_pub),
+        package='robot_state_publisher',
+        node_executable='robot_state_publisher',
+        node_name='robot_state_publisher',
+        node_namespace=namespace,
+        output='screen',
+        parameters=[{'use_sim_time': use_sim_time}],
+        remappings=remappings,
+        arguments=[urdf])
 
 
     # Create the launch description and populate
@@ -140,6 +152,6 @@ def generate_launch_description():
     ld.add_action(start_gazebo_client_cmd)
     ld.add_action(agent_spawner_cmd)
     # Add the actions to launch all of the navigation nodes
-    #ld.add_action(start_robot_state_publisher_cmd)
+    ld.add_action(start_robot_state_publisher_cmd)
 
     return ld

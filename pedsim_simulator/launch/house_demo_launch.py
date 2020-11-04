@@ -29,7 +29,7 @@ def generate_launch_description():
     
     scene_file = LaunchConfiguration('scene_file')
     simulation_factor = LaunchConfiguration('simulation_factor')
-
+    frame_id = LaunchConfiguration('frame_id')
 
     # Set env var to print messages to stdout immediately
     SetEnvironmentVariable('RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1')
@@ -40,7 +40,7 @@ def generate_launch_description():
         description='')
 
     declare_simulation_factor_cmd = DeclareLaunchArgument(
-        'simulation_factor', default_value='0.05',
+        'simulation_factor', default_value='0.2',
         description='Top-level namespace')
     
     pedsim_simulator_cmd = IncludeLaunchDescription(
@@ -48,6 +48,14 @@ def generate_launch_description():
         launch_arguments={'scene_file': scene_file,
                           'simulation_factor': simulation_factor}.items())    
 
+    frame_id_cmd = DeclareLaunchArgument(
+        'frame_id', default_value='map', description='Reference frame')
+
+    pedsim_visualizer_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('pedsim_visualizer'), 'launch', 'visualizer_launch.py')),
+        launch_arguments={'frame_id': frame_id}.items()
+    )  
 
     # Create the launch description and populate
     ld = LaunchDescription()
@@ -55,8 +63,10 @@ def generate_launch_description():
     # Declare the launch options
     ld.add_action(declare_scene_file_cmd)
     ld.add_action(declare_simulation_factor_cmd)
+    ld.add_action(frame_id_cmd)
 
     # Add any conditioned actions
     ld.add_action(pedsim_simulator_cmd)
+    ld.add_action(pedsim_visualizer_cmd)
 
     return ld
