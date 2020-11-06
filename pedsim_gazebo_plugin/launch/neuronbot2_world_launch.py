@@ -47,8 +47,9 @@ def generate_launch_description():
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static')]
 
-    gazebo_model_path = os.path.join(get_package_share_directory('pedsim_gazebo_plugin'), 'models')
-    gazebo_model_path += ':' + os.path.join(get_package_share_directory('neuronbot2_gazebo'), 'models')
+    pedsim_gazebo_path = os.path.join(get_package_share_directory('pedsim_gazebo_plugin'), 'models')
+    nb2_gazebo_path = os.path.join(get_package_share_directory('neuronbot2_gazebo'), 'models')
+    gazebo_model_path = pedsim_gazebo_path + ':' + nb2_gazebo_path;
 
     print(gazebo_model_path)
 
@@ -110,13 +111,18 @@ def generate_launch_description():
         cmd=['gzclient'],
         cwd=[launch_dir], output='screen')
     
+    nb2_spawn_cmd = ExecuteProcess(
+        condition=IfCondition(PythonExpression([use_simulator, ' and not ', headless])),
+        cmd=['ros2', 'run', 'gazebo_ros', 'spawn_entity.py', '-file' , nb2_gazebo_path + '/neuronbot2_w_top_camera/' + 'model.sdf', '-entity', 'nb2'],
+        cwd=[launch_dir], output='screen')
+
     agent_spawner_cmd = Node(
         package='pedsim_gazebo_plugin',
         node_executable='spawn_pedsim_agents.py',
         node_name='spawn_pedsim_agents',
         output='screen')
 
-    urdf = os.path.join(nb2_view_dir, 'urdf', 'neuronbot2.urdf')
+    nb2_urdf = os.path.join(nb2_view_dir, 'urdf', 'neuronbot2_w_top_camera.urdf')
 
     start_robot_state_publisher_cmd = Node(
         condition=IfCondition(use_robot_state_pub),
@@ -127,8 +133,7 @@ def generate_launch_description():
         output='screen',
         parameters=[{'use_sim_time': use_sim_time}],
         remappings=remappings,
-        arguments=[urdf])
-
+        arguments=[nb2_urdf])
 
     # Create the launch description and populate
     ld = LaunchDescription()
@@ -146,6 +151,7 @@ def generate_launch_description():
     # Add any conditioned actions
     ld.add_action(start_gazebo_server_cmd)
     ld.add_action(start_gazebo_client_cmd)
+    ld.add_action(nb2_spawn_cmd)
     ld.add_action(agent_spawner_cmd)
     # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)
