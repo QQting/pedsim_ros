@@ -42,6 +42,7 @@ private:
   bool getTFfromAgent(pedsim_msgs::msg::AgentState actor, TransformStamped & tf);
 
   rclcpp::Subscription<pedsim_msgs::msg::AgentStates>::SharedPtr sub_;
+  rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pub_;
   pedsim_msgs::msg::AgentStates::SharedPtr states_;
   std::shared_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
   double rand_angle;

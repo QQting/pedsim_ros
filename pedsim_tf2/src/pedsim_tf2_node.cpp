@@ -25,12 +25,15 @@ using namespace geometry_msgs::msg;
 
 namespace pedsim
 {
-PedsimTF2::PedsimTF2(const std::string & name) : Node(name), states_()
+PedsimTF2::PedsimTF2(const std::string & name) : Node(name), states_(), tf2_buffer_(get_clock()),
+  tf2_listener_(tf2_buffer_, true)
 {
   sub_ = create_subscription<pedsim_msgs::msg::AgentStates>(
       "pedsim_simulator/simulated_agents", rclcpp::SensorDataQoS(),
       std::bind(&PedsimTF2::agentsCallback, this, std::placeholders::_1));
-  tf_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>(this);
+  pub_ = create_publisher<geometry_msgs::msg::PoseStamped>(
+      "goal_update", 1);
+  tf_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>(this);  
 }
 
 void PedsimTF2::agentsCallback(const pedsim_msgs::msg::AgentStates::SharedPtr msg)
@@ -60,6 +63,7 @@ bool PedsimTF2::getTFfromAgent(pedsim_msgs::msg::AgentState actor, TransformStam
 void PedsimTF2::step()
 {
   rclcpp::Rate loop_rate(50ms);
+  auto last_time = now();
   while (rclcpp::ok())
   {
     if (states_ != NULL)
@@ -72,7 +76,25 @@ void PedsimTF2::step()
           agent_tf.header.stamp = now();
           agent_tf.child_frame_id = "agent_" + std::to_string(actor.id);
           tf_broadcaster_->sendTransform(agent_tf);
-        }
+
+          double time_diff = (now()-last_time).nanoseconds()*1e-6;
+          if (std::to_string(actor.id) == "0" && 
+              time_diff > 100.0) {
+            // Currently we only publish Agent_0 with 10Hz frequency
+            geometry_msgs::msg::TransformStamped transform;
+            geometry_msgs::msg::PoseStamped agent_pose;
+            agent_pose.header = agent_tf.header;
+            agent_pose.header.stamp = now();
+            last_time = now();
+            agent_pose.pose.position.x = actor.pose.position.x;
+            agent_pose.pose.position.y = actor.pose.position.y;
+
+            agent_pose.pose.position.z = actor.pose.position.z;
+            agent_pose.pose.orientation = actor.pose.orientation;
+
+            pub_->publish(agent_pose);
+          }
+        }     
       }
     }
     rclcpp::spin_some(shared_from_this());
