@@ -25,8 +25,7 @@ using namespace geometry_msgs::msg;
 
 namespace pedsim
 {
-PedsimTF2::PedsimTF2(const std::string & name) : Node(name), states_(), tf2_buffer_(get_clock()),
-  tf2_listener_(tf2_buffer_, true)
+PedsimTF2::PedsimTF2(const std::string & name) : Node(name), states_()
 {
   sub_ = create_subscription<pedsim_msgs::msg::AgentStates>(
       "pedsim_simulator/simulated_agents", rclcpp::SensorDataQoS(),
