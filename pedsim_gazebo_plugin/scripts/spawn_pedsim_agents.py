@@ -7,7 +7,7 @@
 
 import rclpy
 from rclpy.node import Node
-from rclpy.qos import qos_profile_sensor_data
+from rclpy.qos import qos_profile_system_default
 from gazebo_msgs.srv import SpawnEntity
 from ament_index_python.packages import get_package_share_directory
 from pedsim_msgs.msg  import AgentStates
@@ -16,7 +16,7 @@ class AgentSpawner(Node):
 
     def __init__(self):
         super().__init__('agent_spawner')
-        qos_profile = qos_profile_sensor_data
+        qos_profile = qos_profile_system_default
         self.sub = self.create_subscription(AgentStates, 
                                             'pedsim_simulator/simulated_agents',
                                             self.actor_poses_callback,
@@ -36,7 +36,7 @@ class AgentSpawner(Node):
     def actor_poses_callback(self, actors):
         req = SpawnEntity.Request()
         for actor in actors.agent_states:
-            actor_id = str(actor.id)
+            actor_id = str(actor.id)            
             actor_pose = actor.pose
             print("Spawning model: actor_id = %s", actor_id)
             model_pose = Pose()

@@ -28,7 +28,7 @@ namespace pedsim
 PedsimTF2::PedsimTF2(const std::string & name) : Node(name), states_()
 {
   sub_ = create_subscription<pedsim_msgs::msg::AgentStates>(
-      "pedsim_simulator/simulated_agents", rclcpp::SensorDataQoS(),
+      "pedsim_simulator/simulated_agents", rclcpp::SystemDefaultsQoS(),
       std::bind(&PedsimTF2::agentsCallback, this, std::placeholders::_1));
   pub_ = create_publisher<geometry_msgs::msg::PoseStamped>(
       "goal_update", 1);

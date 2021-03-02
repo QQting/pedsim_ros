@@ -52,7 +52,7 @@ class ActorPosesPlugin : public gazebo::ModelPlugin
       ros_node_ = gazebo_ros::Node::Get(_sdf);
     
       pedsim_sub_ = ros_node_->create_subscription<pedsim_msgs::msg::AgentStates>(
-      "pedsim_simulator/simulated_agents", rclcpp::SensorDataQoS(),
+      "pedsim_simulator/simulated_agents", rclcpp::SystemDefaultsQoS(),
       std::bind(&ActorPosesPlugin::OnAgentStates, this, std::placeholders::_1));
     }
 
